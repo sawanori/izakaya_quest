@@ -4,7 +4,7 @@ import { RigidBody, CapsuleCollider, RapierRigidBody } from '@react-three/rapier
 import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
 import { useStore } from '../store'
-import { Sheep } from './models/Sheep'
+import { Oreo } from './models/Oreo'
 
 const SPEED = 5
 const direction = new THREE.Vector3()
@@ -123,7 +123,7 @@ export const Player = () => {
         <RigidBody ref={rigidBody} colliders={false} lockRotations friction={0}>
             <CapsuleCollider args={[0.3, 0.3]} position={[0, 0.6, 0]} />
             <group position={[0, 0, 0]}>
-                <Sheep />
+                <Oreo />
             </group>
             <pointLight position={[0, 2, 0]} intensity={2} distance={5} color="white" />
         </RigidBody>
