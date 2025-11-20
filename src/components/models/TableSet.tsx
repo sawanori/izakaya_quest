@@ -7,7 +7,7 @@ export const TableSet = ({ position, rotation = [0, 0, 0] }: { position: [number
     return (
         <group position={position} rotation={rotation}>
             <RigidBody type="fixed" colliders="hull">
-                <primitive object={scene.clone()} scale={2} />
+                <primitive object={scene.clone()} scale={3} />
             </RigidBody>
         </group>
     )
