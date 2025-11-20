@@ -1,12 +1,12 @@
 import { RigidBody, CuboidCollider } from '@react-three/rapier'
 import { useStore } from '../store'
 import { SECTIONS } from '../constants'
-import { Text } from '@react-three/drei'
+import { Text, useTexture } from '@react-three/drei'
 import { Lantern } from './models/Lantern'
 import { TableSet } from './models/TableSet'
 import { Noren } from './models/Noren'
 import { SakeBottle } from './models/SakeBottle'
-import { Okami } from './models/Okami'
+import * as THREE from 'three'
 
 const Zone = ({ position, size, id, label }: { position: [number, number, number], size: [number, number, number], id: string, label: string }) => {
     const setActiveZone = useStore((state) => state.setActiveZone)
@@ -31,13 +31,45 @@ const Zone = ({ position, size, id, label }: { position: [number, number, number
 }
 
 export const World = () => {
+    // Load wood floor textures
+    const [colorMap, normalMap, roughnessMap, heightMap] = useTexture([
+        '/models/wood_texture_calm_1024.png',
+        '/models/wood_texture_calm_normal_1024.png',
+        '/models/wood_texture_calm_roughness_1024.png',
+        '/models/wood_texture_calm_height_1024.png',
+    ])
+
+    // Configure texture repeating for proper tiling
+    colorMap.wrapS = colorMap.wrapT = THREE.RepeatWrapping
+    normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping
+    roughnessMap.wrapS = roughnessMap.wrapT = THREE.RepeatWrapping
+    heightMap.wrapS = heightMap.wrapT = THREE.RepeatWrapping
+
+    const repeatCount = 10
+    colorMap.repeat.set(repeatCount, repeatCount)
+    normalMap.repeat.set(repeatCount, repeatCount)
+    roughnessMap.repeat.set(repeatCount, repeatCount)
+    heightMap.repeat.set(repeatCount, repeatCount)
+
+    // Set proper color space for non-color data
+    normalMap.colorSpace = THREE.NoColorSpace
+    roughnessMap.colorSpace = THREE.NoColorSpace
+    heightMap.colorSpace = THREE.NoColorSpace
+
     return (
         <>
             {/* Floor */}
             <RigidBody type="fixed" friction={1}>
                 <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-                    <planeGeometry args={[50, 50]} />
-                    <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.2} />
+                    <planeGeometry args={[50, 50, 100, 100]} />
+                    <meshStandardMaterial
+                        map={colorMap}
+                        normalMap={normalMap}
+                        normalScale={new THREE.Vector2(1, 1)}
+                        roughnessMap={roughnessMap}
+                        displacementMap={heightMap}
+                        displacementScale={0.05}
+                    />
                 </mesh>
             </RigidBody>
 
@@ -85,28 +117,23 @@ export const World = () => {
                 </mesh>
             </RigidBody>
 
-            {/* Decor - Okami (Proprietress) */}
-            <group position={[-12, 0, -14]} rotation={[0, Math.PI / 4, 0]}>
-                <Okami position={[0, 0, 0]} />
-                <pointLight position={[0, 2, 1]} intensity={1} distance={3} color="#ffaa00" />
-            </group>
 
             {/* Decor - Noren (Entrance) */}
             <Noren position={[0, 2.5, 20]} />
 
             {/* Decor - Sake Bottles */}
-            <SakeBottle position={[-10, 1.0, -10]} color="#4a90e2" />
-            <SakeBottle position={[-11, 1.0, -10]} color="#e24a4a" />
-            <SakeBottle position={[-9, 1.0, -10]} color="#4ae290" />
-            <SakeBottle position={[-12, 1.0, -10]} />
-            <SakeBottle position={[-8, 1.0, -10]} />
+            <SakeBottle position={[-10, 1.0, -10]} type="sake" />
+            <SakeBottle position={[-11, 1.0, -10]} type="shouchuu" />
+            <SakeBottle position={[-9, 1.0, -10]} type="sake" />
+            <SakeBottle position={[-12, 1.0, -10]} type="shouchuu" />
+            <SakeBottle position={[-8, 1.0, -10]} type="sake" />
 
             {/* Shelf Bottles */}
-            <SakeBottle position={[-14.5, 3, -12]} color="#e2e24a" />
-            <SakeBottle position={[-14.5, 3, -13]} />
-            <SakeBottle position={[-14.5, 3, -14]} color="#e24a4a" />
-            <SakeBottle position={[-14.5, 4, -12.5]} />
-            <SakeBottle position={[-14.5, 4, -13.5]} color="#4a90e2" />
+            <SakeBottle position={[-14.5, 3, -12]} type="shouchuu" />
+            <SakeBottle position={[-14.5, 3, -13]} type="sake" />
+            <SakeBottle position={[-14.5, 3, -14]} type="shouchuu" />
+            <SakeBottle position={[-14.5, 4, -12.5]} type="sake" />
+            <SakeBottle position={[-14.5, 4, -13.5]} type="shouchuu" />
 
             {/* Decor - Lanterns */}
             <Lantern position={[0, 4, -5]} />
