@@ -36,6 +36,13 @@ export const UI = () => {
                             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-izakaya-red to-transparent opacity-50" />
                             <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-izakaya-red to-transparent opacity-50" />
 
+                            <button
+                                onClick={() => useStore.getState().setActiveZone(null)}
+                                className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors p-2"
+                            >
+                                ✕
+                            </button>
+
                             <p className="text-izakaya-red font-serif mb-4 tracking-[0.2em] text-lg uppercase">{activeSection.subtitle}</p>
                             <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-6 md:mb-8 tracking-widest">
                                 {activeSection.title}
@@ -45,7 +52,7 @@ export const UI = () => {
                             </p>
 
                             <div className="text-white/40 text-xs md:text-sm font-serif tracking-widest">
-                                エリアから離れると閉じます
+                                エリアから離れるか、✕ボタンで閉じます
                             </div>
                         </div>
                     </motion.div>
@@ -56,7 +63,17 @@ export const UI = () => {
             <div className="absolute bottom-8 left-8 pointer-events-auto md:hidden">
                 <Joystick />
             </div>
-            <div className="absolute bottom-8 right-8 pointer-events-auto md:hidden">
+            <div className="absolute bottom-8 right-8 pointer-events-auto md:hidden flex flex-col gap-4">
+                <motion.button
+                    className="w-16 h-16 bg-red-500/20 rounded-full backdrop-blur-sm border border-red-500/40 flex items-center justify-center active:bg-red-500/40"
+                    whileTap={{ scale: 0.9 }}
+                    onTouchStart={() => useStore.getState().setIsAttacking(true)}
+                    onTouchEnd={() => useStore.getState().setIsAttacking(false)}
+                    onMouseDown={() => useStore.getState().setIsAttacking(true)}
+                    onMouseUp={() => useStore.getState().setIsAttacking(false)}
+                >
+                    <span className="text-white font-bold text-xs">ATTACK</span>
+                </motion.button>
                 <motion.button
                     className="w-16 h-16 bg-white/10 rounded-full backdrop-blur-sm border border-white/20 flex items-center justify-center active:bg-white/30"
                     whileTap={{ scale: 0.9 }}

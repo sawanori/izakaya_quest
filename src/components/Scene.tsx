@@ -15,6 +15,7 @@ export const Scene = () => {
                 { name: 'jump', keys: ['Space'] },
                 { name: 'rotateLeft', keys: ['q', 'Q'] },
                 { name: 'rotateRight', keys: ['e', 'E'] },
+                { name: 'attack', keys: ['Shift'] },
             ]}
         >
             <PerspectiveCamera makeDefault position={[0, 10, 10]} />

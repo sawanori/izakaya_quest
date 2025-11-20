@@ -6,6 +6,7 @@ import { Lantern } from './models/Lantern'
 import { TableSet } from './models/TableSet'
 import { Noren } from './models/Noren'
 import { SakeBottle } from './models/SakeBottle'
+import { Enemy } from './models/Enemy'
 import * as THREE from 'three'
 
 const Zone = ({ position, size, id, label }: { position: [number, number, number], size: [number, number, number], id: string, label: string }) => {
@@ -23,7 +24,20 @@ const Zone = ({ position, size, id, label }: { position: [number, number, number
             </Text>
 
             {/* Sensor */}
-            <RigidBody type="fixed" sensor onIntersectionEnter={() => setActiveZone(id as any)} onIntersectionExit={() => setActiveZone(null)}>
+            <RigidBody
+                type="fixed"
+                sensor
+                onIntersectionEnter={(payload) => {
+                    if (payload.other.rigidBodyObject?.name === 'player') {
+                        setActiveZone(id as any)
+                    }
+                }}
+                onIntersectionExit={(payload) => {
+                    if (payload.other.rigidBodyObject?.name === 'player') {
+                        setActiveZone(null)
+                    }
+                }}
+            >
                 <CuboidCollider args={[size[0], size[1], size[2]]} />
             </RigidBody>
         </group>
@@ -149,6 +163,29 @@ export const World = () => {
             <TableSet position={[10, 0, 10]} rotation={[0, Math.PI / 4, 0]} />
             <TableSet position={[10, 0, 5]} />
             <TableSet position={[5, 0, 10]} />
+
+            {/* Additional Tables */}
+            <TableSet position={[15, 0, 15]} rotation={[0, -Math.PI / 6, 0]} />
+            <TableSet position={[15, 0, 5]} rotation={[0, Math.PI / 3, 0]} />
+            <TableSet position={[15, 0, -5]} rotation={[0, Math.PI / 2, 0]} />
+            <TableSet position={[5, 0, 15]} rotation={[0, Math.PI / 8, 0]} />
+            <TableSet position={[5, 0, 0]} rotation={[0, -Math.PI / 4, 0]} />
+            <TableSet position={[0, 0, 5]} rotation={[0, Math.PI / 6, 0]} />
+            <TableSet position={[-5, 0, 15]} rotation={[0, -Math.PI / 3, 0]} />
+            <TableSet position={[-5, 0, 5]} rotation={[0, Math.PI / 5, 0]} />
+            import {Enemy} from './models/Enemy'
+
+            // ...
+
+            <TableSet position={[10, 0, -5]} rotation={[0, -Math.PI / 8, 0]} />
+            <TableSet position={[5, 0, -5]} rotation={[0, Math.PI / 4, 0]} />
+
+            {/* Enemies */}
+            <Enemy position={[0, 2, 10]} />
+            <Enemy position={[-5, 2, 5]} />
+            <Enemy position={[5, 2, 15]} />
+            <Enemy position={[12, 2, 0]} />
+            <Enemy position={[-8, 2, 12]} />
         </>
     )
 }

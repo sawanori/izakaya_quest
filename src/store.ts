@@ -9,6 +9,8 @@ interface GameState {
     setJoystickInput: (input: { x: number; y: number }) => void
     isJumping: boolean
     setIsJumping: (isJumping: boolean) => void
+    isAttacking: boolean
+    setIsAttacking: (isAttacking: boolean) => void
 }
 
 export const useStore = create<GameState>((set) => ({
@@ -18,4 +20,6 @@ export const useStore = create<GameState>((set) => ({
     setJoystickInput: (input) => set({ joystickInput: input }),
     isJumping: false,
     setIsJumping: (isJumping) => set({ isJumping }),
+    isAttacking: false,
+    setIsAttacking: (isAttacking) => set({ isAttacking }),
 }))

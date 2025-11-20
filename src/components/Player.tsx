@@ -59,12 +59,20 @@ export const Player = () => {
         }
     }, [gl])
 
+    // Sync Keyboard Attack with Store
+    const attackPressed = useKeyboardControls((state) => state.attack)
+
+    useEffect(() => {
+        useStore.getState().setIsAttacking(attackPressed)
+    }, [attackPressed])
+
     useFrame((state, delta) => {
         if (!rigidBody.current) return
 
         const { forward, backward, left, right, jump, rotateLeft, rotateRight } = get()
         const joystickInput = useStore.getState().joystickInput
         const isJumping = useStore.getState().isJumping
+        const isAttacking = useStore.getState().isAttacking
 
         // Update Camera Angle from Keys
         const rotationSpeed = 2 * delta
@@ -116,16 +124,21 @@ export const Player = () => {
         rigidBody.current.setLinvel({ x: direction.x, y: nextY, z: direction.z }, true)
 
         // Rotate character to face movement direction
-        if (modelGroup.current && (forwardInput !== 0 || sideInput !== 0)) {
-            // Calculate the angle the character should face based on movement direction
-            // Add PI to flip the direction 180 degrees so the front faces the movement direction
-            const movementAngle = Math.atan2(direction.x, direction.z) + Math.PI
-            // Smoothly rotate the character towards the movement direction
-            modelGroup.current.rotation.y = THREE.MathUtils.lerp(
-                modelGroup.current.rotation.y,
-                movementAngle,
-                0.1 // Smoothing factor (0-1, lower = smoother)
-            )
+        if (modelGroup.current) {
+            if (isAttacking) {
+                // Attack rotation (spin fast)
+                modelGroup.current.rotation.y += 20 * delta
+            } else if (forwardInput !== 0 || sideInput !== 0) {
+                // Calculate the angle the character should face based on movement direction
+                // Add PI to flip the direction 180 degrees so the front faces the movement direction
+                const movementAngle = Math.atan2(direction.x, direction.z) + Math.PI
+                // Smoothly rotate the character towards the movement direction
+                modelGroup.current.rotation.y = THREE.MathUtils.lerp(
+                    modelGroup.current.rotation.y,
+                    movementAngle,
+                    0.1 // Smoothing factor (0-1, lower = smoother)
+                )
+            }
         }
     })
 
@@ -134,7 +147,7 @@ export const Player = () => {
 
 
     return (
-        <RigidBody ref={rigidBody} colliders={false} lockRotations friction={0}>
+        <RigidBody ref={rigidBody} name="player" colliders={false} lockRotations friction={0}>
             {/* Collider for Oreo model - Adjusted for better fit */}
             <CapsuleCollider args={[0.2, 0.25]} position={[0, 0.5, 0]} />
             <group ref={modelGroup} position={[0, 0, 0]}>
