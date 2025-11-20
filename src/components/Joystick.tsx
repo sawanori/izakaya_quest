@@ -1,13 +1,11 @@
-import { motion, useDragControls } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import { useStore } from '../store'
 
 export const Joystick = () => {
     const setJoystickInput = useStore((state) => state.setJoystickInput)
-    const constraintsRef = useRef(null)
-    const [position, setPosition] = useState({ x: 0, y: 0 })
+    // const [position, setPosition] = useState({ x: 0, y: 0 }) // Unused state
 
-    const handleDrag = (event: any, info: any) => {
+    const handleDrag = (_: any, info: any) => {
         const maxDistance = 35 // Half of the container size minus half of the knob size
         let x = info.offset.x
         let y = info.offset.y
@@ -29,7 +27,7 @@ export const Joystick = () => {
 
     const handleDragEnd = () => {
         setJoystickInput({ x: 0, y: 0 })
-        setPosition({ x: 0, y: 0 })
+        // setPosition({ x: 0, y: 0 })
     }
 
     return (
