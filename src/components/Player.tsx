@@ -13,9 +13,10 @@ const sideVector = new THREE.Vector3()
 
 export const Player = () => {
     const rigidBody = useRef<RapierRigidBody>(null)
+    const modelGroup = useRef<THREE.Group>(null)
     const [, get] = useKeyboardControls()
     // Remove direct subscription to avoid re-renders on every joystick move
-    // const joystickInput = useStore((state) => state.joystickInput) 
+    // const joystickInput = useStore((state) => state.joystickInput)
     // const isJumping = useStore((state) => state.isJumping)
 
     // Camera state
@@ -113,6 +114,19 @@ export const Player = () => {
         }
 
         rigidBody.current.setLinvel({ x: direction.x, y: nextY, z: direction.z }, true)
+
+        // Rotate character to face movement direction
+        if (modelGroup.current && (forwardInput !== 0 || sideInput !== 0)) {
+            // Calculate the angle the character should face based on movement direction
+            // Add PI to flip the direction 180 degrees so the front faces the movement direction
+            const movementAngle = Math.atan2(direction.x, direction.z) + Math.PI
+            // Smoothly rotate the character towards the movement direction
+            modelGroup.current.rotation.y = THREE.MathUtils.lerp(
+                modelGroup.current.rotation.y,
+                movementAngle,
+                0.1 // Smoothing factor (0-1, lower = smoother)
+            )
+        }
     })
 
     // const isMoving = ... (removed unused)
@@ -122,7 +136,7 @@ export const Player = () => {
     return (
         <RigidBody ref={rigidBody} colliders={false} lockRotations friction={0}>
             <CapsuleCollider args={[0.3, 0.3]} position={[0, 0.6, 0]} />
-            <group position={[0, 0, 0]}>
+            <group ref={modelGroup} position={[0, 0, 0]}>
                 <Oreo />
             </group>
             <pointLight position={[0, 2, 0]} intensity={2} distance={5} color="white" />
