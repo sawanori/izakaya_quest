@@ -135,7 +135,8 @@ export const Player = () => {
 
     return (
         <RigidBody ref={rigidBody} colliders={false} lockRotations friction={0}>
-            <CapsuleCollider args={[0.3, 0.3]} position={[0, 0.6, 0]} />
+            {/* Collider for Oreo model - Adjusted for better fit */}
+            <CapsuleCollider args={[0.2, 0.25]} position={[0, 0.5, 0]} />
             <group ref={modelGroup} position={[0, 0, 0]}>
                 <Oreo />
             </group>
