@@ -1,7 +1,7 @@
 export const SECTIONS = [
     {
         id: 'hero',
-        title: '居酒屋 赤提灯',
+        title: '居酒屋 P亭',
         subtitle: '次世代の体験へようこそ',
         description: '伝統と革新が交差する空間で、至高の一杯と肴をお楽しみください。',
     },

@@ -12,7 +12,7 @@ export const UI = () => {
             {/* Header */}
             <header className="flex justify-between items-start">
                 <h1 className="text-2xl font-serif font-bold text-white tracking-widest drop-shadow-lg">
-                    居酒屋 <span className="text-izakaya-red">赤提灯</span>
+                    居酒屋 <span className="text-izakaya-red">P亭</span>
                 </h1>
                 <div className="bg-black/50 backdrop-blur-md p-4 rounded-lg text-white/80 font-sans text-sm hidden md:block">
                     <p>WASD / 矢印キー : 移動</p>
