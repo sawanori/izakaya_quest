@@ -180,6 +180,22 @@ export const World = () => {
             <TableSet position={[10, 0, -5]} rotation={[0, -Math.PI / 8, 0]} />
             <TableSet position={[5, 0, -5]} rotation={[0, Math.PI / 4, 0]} />
 
+            {/* More Tables (Left & Back - Adjusted to avoid counter & kitchen) */}
+            <TableSet position={[-5, 0, 5]} rotation={[0, Math.PI / 3, 0]} />
+            <TableSet position={[-5, 0, 10]} rotation={[0, -Math.PI / 6, 0]} />
+            <TableSet position={[-2, 0, -2]} rotation={[0, Math.PI / 2, 0]} />
+
+            {/* Moved to Right/Front Area */}
+            <TableSet position={[20, 0, 10]} rotation={[0, -Math.PI / 4, 0]} />
+            <TableSet position={[20, 0, 5]} rotation={[0, Math.PI / 5, 0]} />
+            <TableSet position={[20, 0, -5]} rotation={[0, -Math.PI / 3, 0]} />
+
+            {/* Back Right Area */}
+            <TableSet position={[15, 0, -15]} rotation={[0, Math.PI / 6, 0]} />
+            <TableSet position={[10, 0, -15]} rotation={[0, -Math.PI / 5, 0]} />
+            <TableSet position={[5, 0, -15]} rotation={[0, Math.PI / 4, 0]} />
+            <TableSet position={[20, 0, -10]} rotation={[0, -Math.PI / 2, 0]} />
+
             {/* Enemies */}
             <Enemy position={[0, 2, 10]} />
             <Enemy position={[-5, 2, 5]} />
